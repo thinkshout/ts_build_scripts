@@ -21,4 +21,4 @@ git add config.sh
 
 git commit -m "bootstrap $PROJECT"
 
-Echo "Set your install profile name in ./config.sh."
+Echo "Review your new project configuration in ./config.sh."
