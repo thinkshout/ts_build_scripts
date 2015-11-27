@@ -1,4 +1,13 @@
 {
   "name": "thinkshout/ts_build_scripts",
-  "version": "0.0.1"
+  "version": "0.0.1",
+  "require": {
+    "composer/installers": "~1.0",
+    "thinkshout/ts_build_scripts": "dev-master"
+  },
+    "extra": {
+        "installer-paths": {
+            "scripts": ["vendor/package"]
+        }
+    }
 }
