@@ -7,6 +7,7 @@ PROJECT=$1
 git mv ts_build.info $PROJECT.info
 git mv ts_build.install $PROJECT.install
 git mv ts_build.profile $PROJECT.profile
+git cp scripts/default.config.sh config.sh
 
 sed -i "" "s/ts_build/$PROJECT/g" $PROJECT.info
 sed -i "" "s/ts_build/$PROJECT/g" $PROJECT.install
