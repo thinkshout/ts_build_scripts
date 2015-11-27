@@ -6,7 +6,7 @@
   },
   "extra": {
     "installer-paths": {
-      "scripts": ["scripts", "vendor/package"]
+      "scripts": ["thinkshout/ts_build_scripts", "vendor/package"]
     }
   }
 }
