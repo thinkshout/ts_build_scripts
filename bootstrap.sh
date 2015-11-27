@@ -12,12 +12,12 @@ cp vendor/thinkshout/ts_build_scripts/default.config.sh config.sh
 sed -i "" "s/ts_build/$PROJECT/g" $PROJECT.info
 sed -i "" "s/ts_build/$PROJECT/g" $PROJECT.install
 sed -i "" "s/ts_build/$PROJECT/g" $PROJECT.profile
-sed -i "" "s/ts_build/$PROJECT/g" scripts/config.sh
+sed -i "" "s/ts_build/$PROJECT/g" config.sh
 
 git add $PROJECT.info
 git add $PROJECT.install
 git add $PROJECT.profile
-git add scripts/config.sh
+git add config.sh
 
 git commit -m "bootstrap $PROJECT"
 
