@@ -1,4 +1,9 @@
 {
   "name": "thinkshout/ts_build_scripts",
-  "version": "0.0.1"
+  "version": "0.0.1",
+  "bin": [
+      "bootstrap.sh",
+      "build.sh",
+      "deploy.sh"
+  ]
 }
