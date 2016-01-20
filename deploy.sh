@@ -13,9 +13,7 @@ set -e
 
 ORIGIN=$(pwd)
 SKIP=$1
-source config.sh
-HOSTDRUPALROOT=$HOSTTYPE
-source scripts/hosttypes/$HOSTTYPE.sh
+source settings/config.sh
 
 usage()
 {

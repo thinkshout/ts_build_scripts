@@ -9,7 +9,7 @@ set -e
 # profile will not be run, just built.
 #
 
-source config.sh
+source settings/config.sh
 
 confirm () {
   read -r -p "${1:-Are you sure? [Y/n]} " response
@@ -124,7 +124,7 @@ mv $TEMP_BUILD $DESTINATION
 chmod 755 $DESTINATION/sites/default
 
 # run the install profile
-SETTINGS="$DESTINATION/profiles/$PROJECT/scripts/settings/settings_additions.php"
+SETTINGS="settings_additions.php"
 if [ $DBUSER  ] && [ $DBPASS ] && [ $DB ] ; then
   # If bash receives an error status, it will halt execution. Setting +e to tell
   # bash to continue even if error.
@@ -135,7 +135,7 @@ if [ $DBUSER  ] && [ $DBPASS ] && [ $DB ] ; then
   # Copy settings_additions.php if found
   echo $SETTINGS
   if [ -f $SETTINGS ]; then
-    echo -n "Copying settings.php additions"
+    echo -n "Appending settings.php with conditional includes"
     chmod 664 $DESTINATION/sites/default/settings.php
     cat $SETTINGS >> $DESTINATION/sites/default/settings.php
     chmod 444 $DESTINATION/sites/default/settings.php
@@ -146,13 +146,13 @@ else
   # Copy settings_additions.php if found
   echo $SETTINGS
   if [ -f $SETTINGS ]; then
-    echo -n "Copying settings.php additions to default.settings.php "
+    echo -n "Appending default.settings.php with conditional includes"
     cat $SETTINGS >> $DESTINATION/sites/default/default.settings.php
   fi
 fi
 
-SETTINGS_SITE="$DESTINATION/profiles/$PROJECT/scripts/settings/site.settings.php"
-cp $SETTINGS_SITE $DESTINATION/sites/default/site.settings.php
-echo "Copied site.settings.php into place."
+SETTINGS_SITE="$DESTINATION/profiles/$PROJECT/settings"
+cp $SETTINGS_SITE/* $DESTINATION/sites/default/
+echo "Copied all settings files into place."
 
 echo "Build script complete."
