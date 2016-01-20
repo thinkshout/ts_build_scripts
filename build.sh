@@ -124,7 +124,7 @@ mv $TEMP_BUILD $DESTINATION
 chmod 755 $DESTINATION/sites/default
 
 # run the install profile
-SETTINGS="settings_additions.php"
+SETTINGS="$DESTINATION/settings/settings_additions.php"
 if [ $DBUSER  ] && [ $DBPASS ] && [ $DB ] ; then
   # If bash receives an error status, it will halt execution. Setting +e to tell
   # bash to continue even if error.
