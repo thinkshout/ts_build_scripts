@@ -111,6 +111,11 @@ fi
 echo "Building the profile..."
 drush make --no-core --contrib-destination --no-gitinfofile drupal-org.make tmp
 
+# Execute build customizations
+if [ "`type -t postbuild`" = 'function' ]; then
+    postbuild
+fi
+
 # Build the distribution and copy the profile in place.
 echo "Building the distribution..."
 drush make --no-gitinfofile drupal-org-core.make $TEMP_BUILD
