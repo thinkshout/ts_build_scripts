@@ -162,9 +162,13 @@ else
   git checkout master
 fi
 
-# Remove the scripts folder for security purposes:
+# Remove the scripts, vendor, & settings folders for security purposes:
 rm -rf $TEMP_BUILD/drupal/profiles/$PROJECT/scripts
 echo "rm -rf $TEMP_BUILD/drupal/profiles/$PROJECT/scripts"
+rm -rf $TEMP_BUILD/drupal/profiles/$PROJECT/settings
+echo "rm -rf $TEMP_BUILD/drupal/profiles/$PROJECT/settings"
+rm -rf $TEMP_BUILD/drupal/profiles/$PROJECT/vendor
+echo "rm -rf $TEMP_BUILD/drupal/profiles/$PROJECT/vendor"
 
 # Remove .git and .gitignore files
 find $TEMP_BUILD/drupal | grep '\.git' | xargs rm -rf
