@@ -170,6 +170,12 @@ echo "rm -rf $TEMP_BUILD/drupal/profiles/$PROJECT/settings"
 rm -rf $TEMP_BUILD/drupal/profiles/$PROJECT/vendor
 echo "rm -rf $TEMP_BUILD/drupal/profiles/$PROJECT/vendor"
 
+# Remove files used by these scripts:
+rm $TEMP_BUILD/drupal/sites/default/config.sh
+echo "rm $TEMP_BUILD/drupal/sites/default/config.sh"
+rm $TEMP_BUILD/drupal/sites/default/settings_additions.php
+echo "rm $TEMP_BUILD/drupal/sites/default/settings_additions.php"
+
 # Remove .git and .gitignore files
 find $TEMP_BUILD/drupal | grep '\.git' | xargs rm -rf
 echo "find $TEMP_BUILD/drupal | grep '\.git' | xargs rm -rf"
