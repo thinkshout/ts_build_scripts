@@ -183,9 +183,10 @@ echo "find $TEMP_BUILD/drupal | grep '\.git' | xargs rm -rf"
 # Move the remote .git & .gitignore into the drupal root
 mv $TEMP_BUILD/$HOSTTYPE/.git $TEMP_BUILD/drupal/.git
 echo "mv $TEMP_BUILD/$HOSTTYPE/.git $TEMP_BUILD/drupal/.git"
-mv $TEMP_BUILD/$HOSTTYPE/.gitignore $TEMP_BUILD/drupal/.gitignore
-echo "mv $TEMP_BUILD/$HOSTTYPE/.gitignore $TEMP_BUILD/drupal/.gitignore"
-
+if [ ! -f $TEMP_BUILD/$HOSTTYPE/.gitignore ]; then
+  mv $TEMP_BUILD/$HOSTTYPE/.gitignore $TEMP_BUILD/drupal/.gitignore
+  echo "mv $TEMP_BUILD/$HOSTTYPE/.gitignore $TEMP_BUILD/drupal/.gitignore"
+fi
 # Now let's build our commit message.
 # git plumbing functions don't attend properly to --exec-path
 # so we end up jumping around the directory structure to make git calls
