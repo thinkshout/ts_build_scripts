@@ -183,7 +183,7 @@ echo "find $TEMP_BUILD/drupal | grep '\.git' | xargs rm -rf"
 # Move the remote .git & .gitignore into the drupal root
 mv $TEMP_BUILD/$HOSTTYPE/.git $TEMP_BUILD/drupal/.git
 echo "mv $TEMP_BUILD/$HOSTTYPE/.git $TEMP_BUILD/drupal/.git"
-if [ ! -f $TEMP_BUILD/$HOSTTYPE/.gitignore ]; then
+if [ -f $TEMP_BUILD/$HOSTTYPE/.gitignore ]; then
   mv $TEMP_BUILD/$HOSTTYPE/.gitignore $TEMP_BUILD/drupal/.gitignore
   echo "mv $TEMP_BUILD/$HOSTTYPE/.gitignore $TEMP_BUILD/drupal/.gitignore"
 fi
