@@ -129,6 +129,11 @@ mv $TEMP_BUILD $DESTINATION
 # set permissions on the sites/default directory
 chmod 755 $DESTINATION/sites/default
 
+# Inculde copies of the settings files that were used to build the site, for reference
+SETTINGS_SITE="$DESTINATION/profiles/$PROJECT/settings"
+cp $SETTINGS_SITE/* $DESTINATION/sites/default/
+echo "Copied all settings files into place."
+
 # run the install profile
 SETTINGS="$DESTINATION/settings/settings_additions.php"
 if [ $DBUSER  ] && [ $DBPASS ] && [ $DB ] ; then
@@ -156,9 +161,5 @@ else
     cat $SETTINGS >> $DESTINATION/sites/default/default.settings.php
   fi
 fi
-
-SETTINGS_SITE="$DESTINATION/profiles/$PROJECT/settings"
-cp $SETTINGS_SITE/* $DESTINATION/sites/default/
-echo "Copied all settings files into place."
 
 echo "Build script complete."
