@@ -158,6 +158,7 @@ else
 fi
 
 SETTINGS_SITE="$DESTINATION/profiles/$PROJECT/settings"
+chmod 755 $DESTINATION/sites/default/
 cp $SETTINGS_SITE/* $DESTINATION/sites/default/
 echo "Copied all settings files into place."
 
