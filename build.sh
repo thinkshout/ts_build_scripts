@@ -135,7 +135,7 @@ cp $SETTINGS_SITE/* $DESTINATION/sites/default/
 echo "Copied all settings files into place."
 
 # run the install profile
-SETTINGS="$DESTINATION/settings/settings_additions.php"
+SETTINGS="$SETTINGS_SITE/settings_additions.php"
 if [ $DBUSER  ] && [ $DBPASS ] && [ $DB ] ; then
   # If bash receives an error status, it will halt execution. Setting +e to tell
   # bash to continue even if error.
