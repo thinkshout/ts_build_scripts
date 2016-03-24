@@ -177,6 +177,10 @@ rm $TEMP_BUILD/drupal/sites/default/settings_additions.php
 echo "rm $TEMP_BUILD/drupal/sites/default/settings_additions.php"
 
 # Remove .git and .gitignore files
+rm -rf $TEMP_BUILD/drupal/profiles/$PROJECT/.git
+echo "rm -rf $TEMP_BUILD/drupal/profiles/$PROJECT/.git"
+rm -rf $TEMP_BUILD/drupal/.git
+echo "rm -rf $TEMP_BUILD/drupal/.git"
 find $TEMP_BUILD/drupal | grep '\.git' | xargs rm -rf
 echo "find $TEMP_BUILD/drupal | grep '\.git' | xargs rm -rf"
 
