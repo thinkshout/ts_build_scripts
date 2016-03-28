@@ -139,10 +139,10 @@ echo "Cloning $HOSTTYPE Git Repo..."
 
 # If host allows for multidev, check if a branch is specified
 if [[ -z $BRANCH ]]; then
-  git clone $GITREPO $TEMP_BUILD/$HOSTTYPE
+  git clone --depth=1 $GITREPO $TEMP_BUILD/$HOSTTYPE
 else
   echo "Checkout $BRANCH branch..."
-  git clone --branch $BRANCH $GITREPO $TEMP_BUILD/$HOSTTYPE
+  git clone --depth=1 --branch $BRANCH $GITREPO $TEMP_BUILD/$HOSTTYPE
 fi
 
 echo "$HOSTTYPE Clone complete, calling build.sh -y $TEMP_BUILD/drupal..."
