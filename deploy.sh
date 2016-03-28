@@ -175,6 +175,14 @@ rm -f $TEMP_BUILD/drupal/sites/default/config.sh
 echo "rm -f $TEMP_BUILD/drupal/sites/default/config.sh"
 rm -f $TEMP_BUILD/drupal/sites/default/settings_additions.php
 echo "rm -f $TEMP_BUILD/drupal/sites/default/settings_additions.php"
+rm -f $TEMP_BUILD/drupal/profiles/$PROJECT/composer.json
+echo "rm -f $TEMP_BUILD/drupal/profiles/$PROJECT/composer.json"
+rm -f $TEMP_BUILD/drupal/profiles/$PROJECT/composer.lock
+echo "rm -f $TEMP_BUILD/drupal/profiles/$PROJECT/composer.lock"
+
+# Make sure no local settings are committed to pantheon
+rm -f $TEMP_BUILD/drupal/sites/default/local.settings.php
+echo "rm -f $TEMP_BUILD/drupal/sites/default/local.settings.php"
 
 # Remove .git and .gitignore files
 rm -rf $TEMP_BUILD/drupal/profiles/$PROJECT/.git
