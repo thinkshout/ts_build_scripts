@@ -117,7 +117,7 @@ drush make --no-gitinfofile drupal-org-core.make $TEMP_BUILD
 echo "Moving to destination... "
 cp -r tmp/ $TEMP_BUILD/profiles/$PROJECT
 rm -rf tmp
-cp -r . $TEMP_BUILD/profiles/$PROJECT
+cp -a . $TEMP_BUILD/profiles/$PROJECT
 # Execute build customizations
 if [ "`type -t postbuild`" = 'function' ]; then
     cd $TEMP_BUILD
