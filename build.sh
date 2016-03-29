@@ -114,7 +114,7 @@ drush make --no-core --contrib-destination --no-gitinfofile drupal-org.make tmp
 # Build the distribution and copy the profile in place.
 echo "Building the distribution..."
 drush make --no-gitinfofile drupal-org-core.make $TEMP_BUILD
-echo -n "Moving to destination... "
+echo "Moving to destination... "
 cp -r tmp $TEMP_BUILD/profiles/$PROJECT
 rm -rf tmp
 cp -r . $TEMP_BUILD/profiles/$PROJECT
@@ -146,7 +146,7 @@ if [ $DBUSER  ] && [ $DBPASS ] && [ $DB ] ; then
   # Copy settings_additions.php if found
   echo $SETTINGS
   if [ -f $SETTINGS ]; then
-    echo -n "Appending settings.php with conditional includes"
+    echo "Appending settings.php with conditional includes"
     chmod 664 $DESTINATION/sites/default/settings.php
     cat $SETTINGS >> $DESTINATION/sites/default/settings.php
     chmod 444 $DESTINATION/sites/default/settings.php
@@ -157,7 +157,7 @@ else
   # Copy settings_additions.php if found
   echo $SETTINGS
   if [ -f $SETTINGS ]; then
-    echo -n "Appending default.settings.php with conditional includes"
+    echo "Appending default.settings.php with conditional includes"
     cat $SETTINGS >> $DESTINATION/sites/default/default.settings.php
   fi
 fi
