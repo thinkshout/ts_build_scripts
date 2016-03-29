@@ -153,12 +153,14 @@ if [ $DBUSER  ] && [ $DBPASS ] && [ $DB ] ; then
   fi
   set -e
 else
-  echo "Skipping install profile"
-  # Copy settings_additions.php if found
-  echo $SETTINGS
+  echo "Skipping install profile and using default.settings.php"
+  if [ ! -f $DESTINATION/sites/default/settings.php ]; then
+    cp $DESTINATION/sites/default/default.settings.php $DESTINATION/sites/default/settings.php
+  fi
+  # Appending settings_additions.php to settings.php
   if [ -f $SETTINGS ]; then
-    echo "Appending default.settings.php with conditional includes"
-    cat $SETTINGS >> $DESTINATION/sites/default/default.settings.php
+    echo "Appending conditional includes to settings.php"
+    cat $SETTINGS >> $DESTINATION/sites/default/settings.php
   fi
 fi
 
