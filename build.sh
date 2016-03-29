@@ -146,7 +146,7 @@ if [ $DBUSER  ] && [ $DBPASS ] && [ $DB ] ; then
   # Copy settings_additions.php if found
   echo $SETTINGS
   if [ -f $SETTINGS ]; then
-    echo "Appending settings.php with conditional includes"
+    echo "Appending settings_additions.php to settings.php"
     chmod 664 $DESTINATION/sites/default/settings.php
     cat $SETTINGS >> $DESTINATION/sites/default/settings.php
     chmod 444 $DESTINATION/sites/default/settings.php
@@ -159,9 +159,10 @@ else
   fi
   # Appending settings_additions.php to settings.php
   if [ -f $SETTINGS ]; then
-    echo "Appending conditional includes to settings.php"
+    echo "Appending settings_additions.php to settings.php"
     cat $SETTINGS >> $DESTINATION/sites/default/settings.php
   fi
 fi
+
 
 echo "Build script complete."
