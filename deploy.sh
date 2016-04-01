@@ -18,27 +18,32 @@ usage()
 cat << EOF
 usage: $0 options
 
-deploy.sh <# of commits from made directly on host since last push
+deploy.sh <# of commits made directly on host since last push>
 Copy ./scripts/default.config.sh to ./config.sh and add your project configuration.
 
 OPTIONS:
   -h      Show this message
   -b      Branch to checkout (optional, current branch name will be used otherwise)
+  -y      Skip confirmation prompts
 
 EOF
 }
 
 confirmpush () {
   echo "Git add & commit completed. Ready to push to Repo at $GITREPO."
-  read -r -p "Push? [y/n] " response
-  case $response in
-    [yY][eE][sS]|[yY])
-      true
-      ;;
-    *)
-      false
-      ;;
-  esac
+  if $ASK; then
+    read -r -p "Push? [y/n] " response
+    case $response in
+      [yY][eE][sS]|[yY])
+        true
+        ;;
+      *)
+        false
+        ;;
+    esac
+  else
+    true
+  fi
 }
 
 confirmcommitmsg () {
@@ -47,15 +52,19 @@ confirmcommitmsg () {
   echo $'\n'
   cat $TEMP_BUILD/commitmessage
   echo $'\n'
-  read -r -p "Commit message is correct? [y/n] " response
-  case $response in
-    [yY][eE][sS]|[yY])
-      true
-      ;;
-    *)
-      false
-      ;;
-  esac
+  if $ASK; then
+    read -r -p "Commit message is correct? [y/n] " response
+    case $response in
+      [yY][eE][sS]|[yY])
+        true
+        ;;
+      *)
+        false
+        ;;
+    esac
+  else
+    true
+  fi
 }
 
 librariescheck () {
@@ -67,20 +76,25 @@ librariescheck () {
     echo $'\n'
     cat $TEMP_BUILD/librariesdiff
     echo $'\n'
-    read -r -p "Are you sure you want to update libraries? [y/n] " response
-    case $response in
-      [yY][eE][sS]|[yY])
-        true
-        ;;
-      *)
-        false
-        ;;
-    esac
+    if $ASK; then
+      read -r -p "Are you sure you want to update libraries? [y/n] " response
+      case $response in
+        [yY][eE][sS]|[yY])
+          true
+          ;;
+        *)
+          false
+          ;;
+      esac
+    else
+      true
+    fi
 fi
 }
 
 BRANCH=
-while getopts “h:b:r:t:f:” OPTION
+ASK=true
+while getopts “h:b:y” OPTION
 do
   case $OPTION in
     h)
@@ -89,6 +103,9 @@ do
       ;;
     b)
       BRANCH=$OPTARG
+      ;;
+    y)
+      ASK=false
       ;;
     ?)
        usage
@@ -100,10 +117,6 @@ done
 if [[ -z $GITREPO ]]; then
   echo 'Set $GITREPO in scripts/config.sh'
   exit 1
-fi
-
-if [ "x$HOSTTYPE" == "x" ]; then
-  usage
 fi
 
 if [ "x$SKIP" == "x" ]; then
@@ -211,9 +224,9 @@ fi
 cd $TEMP_BUILD/drupal
 
 if confirmcommitmsg; then
-echo "Commit message approved."
+  echo "Commit message approved."
 else
-echo "Commit message not approved."
+  echo "Commit message not approved."
   exit 1
 fi
 
