@@ -13,6 +13,7 @@ ORIGIN=$(pwd)
 SKIP=$1
 source settings/config.sh
 
+
 usage()
 {
 cat << EOF
@@ -30,7 +31,7 @@ EOF
 }
 
 confirmpush () {
-  echo "Git add & commit completed. Ready to push to Repo at $GITREPO."
+  echo "Git add & commit completed. Ready to push to $BRANCH branch of $GITREPO."
   if $ASK; then
     read -r -p "Push? [y/n] " response
     case $response in
@@ -137,15 +138,13 @@ case $OSTYPE in
     ;;
 esac
 
-# Clone the hosting Repo first, as a bad argument can cause this to fail
-echo "Cloning $HOSTTYPE Git Repo..."
 
 # If branch isn't explicit, default to current branch.
 if [[ -z $BRANCH ]]; then
   BRANCH=$(git symbolic-ref --short -q HEAD)
 fi
 
-echo "Checkout $BRANCH branch..."
+echo "Checkout $BRANCH branch from $HOSTTYPE..."
 git clone --depth=1 --branch $BRANCH $GITREPO $TEMP_BUILD/$HOSTTYPE
 
 echo "$HOSTTYPE Clone complete, calling build.sh -y $TEMP_BUILD/drupal..."
