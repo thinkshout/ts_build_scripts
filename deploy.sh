@@ -10,21 +10,21 @@ set -e
 #
 
 ORIGIN=$(pwd)
-SKIP=$1
+BUILD_DIR=$1
 source settings/config.sh
-
 
 usage()
 {
 cat << EOF
 usage: $0 options
 
-deploy.sh <# of commits made directly on host since last push>
+deploy.sh <source directory> <options>
 Copy ./scripts/default.config.sh to ./config.sh and add your project configuration.
 
 OPTIONS:
   -h      Show this message
   -b      Branch to checkout (optional, current branch name will be used otherwise)
+  -n      Number of commits made directly on host since last push
   -y      Skip confirmation prompts
 
 EOF
@@ -69,7 +69,7 @@ confirmcommitmsg () {
 }
 
 librariescheck () {
-  git diff --name-status $TEMP_BUILD/drupal/profiles/$PROJECT/libraries >> $TEMP_BUILD/librariesdiff #--diff-filter=ACMRTUXB
+  git diff --name-status $BUILD_DIR/profiles/$PROJECT/libraries >> $TEMP_BUILD/librariesdiff #--diff-filter=ACMRTUXB
   WORDCOUNT=`cat $TEMP_BUILD/librariesdiff | wc -l`
   if [ $WORDCOUNT -gt 0 ]; then
     echo $'\n'
@@ -95,7 +95,7 @@ fi
 
 BRANCH=
 ASK=true
-while getopts “h:b:y” OPTION
+while getopts “h:b:n:y” OPTION
 do
   case $OPTION in
     h)
@@ -104,6 +104,9 @@ do
       ;;
     b)
       BRANCH=$OPTARG
+      ;;
+    n)
+      SKIP=$OPTARG
       ;;
     y)
       ASK=false
@@ -138,6 +141,7 @@ case $OSTYPE in
     ;;
 esac
 
+$HOST_DIR=$TEMP_BUILD/$HOSTTYPE
 
 # If branch isn't explicit, default to current branch.
 if [[ -z $BRANCH ]]; then
@@ -145,55 +149,57 @@ if [[ -z $BRANCH ]]; then
 fi
 
 echo "Checkout $BRANCH branch from $HOSTTYPE..."
-git clone --depth=1 --branch $BRANCH $GITREPO $TEMP_BUILD/$HOSTTYPE
+git clone --depth=1 --branch $BRANCH $GITREPO $HOST_DIR
 
-echo "$HOSTTYPE Clone complete, calling build.sh -y $TEMP_BUILD/drupal..."
-echo "DEPLOY FROM $BRANCH"
-scripts/build.sh -y $TEMP_BUILD/drupal
+if [ -n $BUILD_DIR ] then
+  $BUILD_DIR=$TEMP_BUILD/drupal
+  echo "Running build.sh -y $BUILD_DIR..."
+  scripts/build.sh -y $BUILD_DIR
+fi
 
 # Remove the scripts, vendor, & settings folders for security purposes:
-rm -rf $TEMP_BUILD/drupal/profiles/$PROJECT/scripts
-echo "rm -rf $TEMP_BUILD/drupal/profiles/$PROJECT/scripts"
-rm -rf $TEMP_BUILD/drupal/profiles/$PROJECT/settings
-echo "rm -rf $TEMP_BUILD/drupal/profiles/$PROJECT/settings"
-rm -rf $TEMP_BUILD/drupal/profiles/$PROJECT/vendor
-echo "rm -rf $TEMP_BUILD/drupal/profiles/$PROJECT/vendor"
+rm -rf $BUILD_DIR/profiles/$PROJECT/scripts
+echo "rm -rf $BUILD_DIR/profiles/$PROJECT/scripts"
+rm -rf $BUILD_DIR/profiles/$PROJECT/settings
+echo "rm -rf $BUILD_DIR/profiles/$PROJECT/settings"
+rm -rf $BUILD_DIR/profiles/$PROJECT/vendor
+echo "rm -rf $BUILD_DIR/profiles/$PROJECT/vendor"
 
 # Remove files used by these scripts:
-rm -f $TEMP_BUILD/drupal/sites/default/config.sh
-echo "rm -f $TEMP_BUILD/drupal/sites/default/config.sh"
-rm -f $TEMP_BUILD/drupal/sites/default/settings_additions.php
-echo "rm -f $TEMP_BUILD/drupal/sites/default/settings_additions.php"
-rm -f $TEMP_BUILD/drupal/profiles/$PROJECT/composer.json
-echo "rm -f $TEMP_BUILD/drupal/profiles/$PROJECT/composer.json"
-rm -f $TEMP_BUILD/drupal/profiles/$PROJECT/composer.lock
-echo "rm -f $TEMP_BUILD/drupal/profiles/$PROJECT/composer.lock"
+rm -f $BUILD_DIR/sites/default/config.sh
+echo "rm -f $BUILD_DIR/sites/default/config.sh"
+rm -f $BUILD_DIR/sites/default/settings_additions.php
+echo "rm -f $BUILD_DIR/sites/default/settings_additions.php"
+rm -f $BUILD_DIR/profiles/$PROJECT/composer.json
+echo "rm -f $BUILD_DIR/profiles/$PROJECT/composer.json"
+rm -f $BUILD_DIR/profiles/$PROJECT/composer.lock
+echo "rm -f $BUILD_DIR/profiles/$PROJECT/composer.lock"
 
 # Make sure no local settings are committed to pantheon
-rm -f $TEMP_BUILD/drupal/sites/default/local.settings.php
-echo "rm -f $TEMP_BUILD/drupal/sites/default/local.settings.php"
+rm -f $BUILD_DIR/sites/default/local.settings.php
+echo "rm -f $BUILD_DIR/sites/default/local.settings.php"
 
 # Remove .git and .gitignore files
-rm -rf $TEMP_BUILD/drupal/profiles/$PROJECT/.git
-echo "rm -rf $TEMP_BUILD/drupal/profiles/$PROJECT/.git"
-rm -rf $TEMP_BUILD/drupal/.git
-echo "rm -rf $TEMP_BUILD/drupal/.git"
-find $TEMP_BUILD/drupal | grep '\.git' | xargs rm -rf
-echo "find $TEMP_BUILD/drupal | grep '\.git' | xargs rm -rf"
+rm -rf $BUILD_DIR/profiles/$PROJECT/.git
+echo "rm -rf $BUILD_DIR/profiles/$PROJECT/.git"
+rm -rf $BUILD_DIR/.git
+echo "rm -rf $BUILD_DIR/.git"
+find $BUILD_DIR | grep '\.git' | xargs rm -rf
+echo "find $BUILD_DIR | grep '\.git' | xargs rm -rf"
 
 # Move the remote .git & .gitignore into the drupal root
-mv $TEMP_BUILD/$HOSTTYPE/.git $TEMP_BUILD/drupal/.git
-echo "mv $TEMP_BUILD/$HOSTTYPE/.git $TEMP_BUILD/drupal/.git"
-if [ -f $TEMP_BUILD/$HOSTTYPE/.gitignore ]; then
-  mv $TEMP_BUILD/$HOSTTYPE/.gitignore $TEMP_BUILD/drupal/.gitignore
-  echo "mv $TEMP_BUILD/$HOSTTYPE/.gitignore $TEMP_BUILD/drupal/.gitignore"
+mv $HOST_DIR/.git $BUILD_DIR/.git
+echo "mv $HOST_DIR/.git $BUILD_DIR/.git"
+if [ -f $HOST_DIR/.gitignore ]; then
+  mv $HOST_DIR/.gitignore $BUILD_DIR/.gitignore
+  echo "mv $HOST_DIR/.gitignore $BUILD_DIR/.gitignore"
 fi
 # Now let's build our commit message.
 # git plumbing functions don't attend properly to --exec-path
 # so we end up jumping around the directory structure to make git calls
 # First, get the last hosting repo commit date so we know where to start
 # our amalgamated commit comments from:
-cd $TEMP_BUILD/drupal
+cd $BUILD_DIR
 COMMIT=`git rev-list HEAD --timestamp --max-count=1 --skip=$SKIP`
 cd $ORIGIN
 FILTER=" *"
@@ -220,7 +226,7 @@ else
   $EDITOR $TEMP_BUILD/commitmessage
 fi
 
-cd $TEMP_BUILD/drupal
+cd $BUILD_DIR
 
 if confirmcommitmsg; then
   echo "Commit message approved."
@@ -266,7 +272,7 @@ if confirmpush; then
 else
   echo "Changes have not been pushed to Git Repository at $GITREPO."
   echo "To push changes:"
-  echo "> cd $TEMP_BUILD/drupal"
+  echo "> cd $BUILD_DIR"
   echo "> git push"
 fi
 echo "Build script complete. Clean up temp files with:"
