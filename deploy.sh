@@ -141,7 +141,7 @@ case $OSTYPE in
     ;;
 esac
 
-$HOST_DIR=$TEMP_BUILD/$HOSTTYPE
+$HOST_DIR="$TEMP_BUILD/$HOSTTYPE"
 
 # If branch isn't explicit, default to current branch.
 if [[ -z $BRANCH ]]; then
