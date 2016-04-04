@@ -218,12 +218,15 @@ echo "Amalgamating the following commits from $BUILDREPO:" >> $TEMP_BUILD/commit
 echo "Amalgamating commit comments since: $COMMITDATE"
 git log --pretty=format:"%h %s" --since="$COMMITDATE" >> $TEMP_BUILD/commitmessage
 
-if [[ -z $EDITOR ]]; then
-  echo "Running vi to customize commit message: close editor to continue script."
-  vi $TEMP_BUILD/commitmessage
-else
-  echo "Running $EDITOR to customize commit message: close editor to continue script."
-  $EDITOR $TEMP_BUILD/commitmessage
+# Only prompt to edit the commit message if we're asking for input.
+if $ASK; then
+  if [[ -z $EDITOR ]]; then
+    echo "Running vi to customize commit message: close editor to continue script."
+    vi $TEMP_BUILD/commitmessage
+  else
+    echo "Running $EDITOR to customize commit message: close editor to continue script."
+    $EDITOR $TEMP_BUILD/commitmessage
+  fi
 fi
 
 cd $BUILD_DIR
