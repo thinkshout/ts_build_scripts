@@ -278,7 +278,7 @@ git commit --file=$TEMP_BUILD/commitmessage >> /dev/null
 git log --max-count=1
 echo $'\n'
 if confirmpush; then
-  git push
+  git push origin
 else
   echo "Changes have not been pushed to Git Repository at $GITREPO."
   echo "To push changes:"
