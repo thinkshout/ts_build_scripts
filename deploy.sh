@@ -144,6 +144,13 @@ case $OSTYPE in
     ;;
 esac
 
+# Identify the automation user
+if [ -n "$CI" ]
+then
+  git config --global user.email "ci@thinkshout.com"
+  git config --global user.name "ThinkShout CI Bot"
+fi
+
 HOST_DIR="$TEMP_BUILD/$HOSTTYPE"
 
 # If branch isn't explicit, default to current branch.
