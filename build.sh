@@ -131,6 +131,10 @@ chmod 755 $DESTINATION/sites/default
 
 # Inculde copies of the settings files that were used to build the site, for reference
 SETTINGS_SITE="$DESTINATION/profiles/$PROJECT/settings"
+
+# replace PROJECT with actual project name in local.settings.php
+sed -i '' "s/PROJECT/$PROJECT/g" $DESTINATION/profiles/$PROJECT/scripts/settings/local.settings.php
+
 cp $SETTINGS_SITE/* $DESTINATION/sites/default/
 printf "Copied all settings files into place.\n"
 
@@ -165,20 +169,6 @@ else
     printf "Appending settings_additions.php to settings.php\n"
     cat $SETTINGS >> $DESTINATION/sites/default/settings.php
   fi
-fi
-
-SETTINGS_SITE="$DESTINATION/profiles/$PROJECT/scripts/settings/site.settings.php"
-if [ -f $SETTINGS_SITE ]; then
-  cp $SETTINGS_SITE $DESTINATION/sites/default/site.settings.php
-  printf "Copied site.settings.php into place.\n"
-fi
-
-SETTINGS_LOCAL="$DESTINATION/profiles/$PROJECT/scripts/settings/local.settings.php"
-if [ -f $SETTINGS_LOCAL ]; then
-  # replace PROJECT with actual project name in local.settings.php
-  sed -i '' "s/PROJECT/$PROJECT/g" $DESTINATION/profiles/$PROJECT/scripts/settings/local.settings.php
-  cp $SETTINGS_LOCAL $DESTINATION/sites/default/local.settings.php
-  printf "Copied local.settings.php into place.\n"
 fi
 
 # uncomment RewriteBase in project's .htaccess file
