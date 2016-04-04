@@ -114,8 +114,8 @@ drush make --no-core --contrib-destination --no-gitinfofile drupal-org.make tmp
 # Build the distribution and copy the profile in place.
 echo "Building the distribution..."
 drush make --no-gitinfofile drupal-org-core.make $TEMP_BUILD
-echo "Moving to destination... "
-cp -r tmp/ $TEMP_BUILD/profiles/$PROJECT
+echo "Moving profile to destination... "
+cp -r tmp/* $TEMP_BUILD/profiles/$PROJECT
 rm -rf tmp
 cp -a . $TEMP_BUILD/profiles/$PROJECT
 # Execute build customizations
