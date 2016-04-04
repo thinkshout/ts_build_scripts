@@ -187,7 +187,7 @@ rm -rf $BUILD_DIR/profiles/$PROJECT/.git
 echo "rm -rf $BUILD_DIR/profiles/$PROJECT/.git"
 rm -rf $BUILD_DIR/.git
 echo "rm -rf $BUILD_DIR/.git"
-find $BUILD_DIR -depth 2 | grep '\.git' | xargs rm -rf
+find $BUILD_DIR | grep '\.git' | xargs rm -rf
 echo "find $BUILD_DIR | grep '\.git' | xargs rm -rf"
 
 # Move the remote .git & .gitignore into the drupal root
