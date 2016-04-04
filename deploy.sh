@@ -203,11 +203,8 @@ fi
 # First, get the last hosting repo commit date so we know where to start
 # our amalgamated commit comments from:
 cd $BUILD_DIR
-COMMIT=`git rev-list HEAD --timestamp --max-count=1 --skip=$SKIP`
+COMMITDATE=`git log -n 1 --skip=$SKIP $BRANCH --format=format:%ci`
 cd $ORIGIN
-FILTER=" *"
-COMMITDATEUNIX=${COMMIT%%$FILTER}
-COMMITDATE=`date -r $COMMITDATEUNIX '+%m/%d/%Y %H:%M:%S'`
 
 # Git log for commit message
 cd $ORIGIN
