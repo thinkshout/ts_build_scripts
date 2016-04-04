@@ -10,7 +10,6 @@ set -e
 #
 
 ORIGIN=$(pwd)
-BUILD_DIR=$1
 source settings/config.sh
 
 usage()
@@ -18,11 +17,12 @@ usage()
 cat << EOF
 usage: $0 options
 
-deploy.sh <source directory> <options>
-Copy ./scripts/default.config.sh to ./config.sh and add your project configuration.
+deploy.sh <options>
+Copy ./settings/default.config.sh to ./settings/config.sh and add your project configuration.
 
 OPTIONS:
   -h      Show this message
+  -d      Source directory for the build.
   -b      Branch to checkout (optional, current branch name will be used otherwise)
   -n      Number of commits made directly on host since last push
   -y      Skip confirmation prompts
@@ -95,7 +95,7 @@ fi
 
 BRANCH=
 ASK=true
-while getopts “h:b:n:y” OPTION
+while getopts “h:b:d:n:y” OPTION
 do
   case $OPTION in
     h)
@@ -107,6 +107,9 @@ do
       ;;
     n)
       SKIP=$OPTARG
+      ;;
+    d)
+      BUILD_DIR=$OPTARG
       ;;
     y)
       ASK=false
@@ -141,7 +144,7 @@ case $OSTYPE in
     ;;
 esac
 
-$HOST_DIR="$TEMP_BUILD/$HOSTTYPE"
+HOST_DIR="$TEMP_BUILD/$HOSTTYPE"
 
 # If branch isn't explicit, default to current branch.
 if [[ -z $BRANCH ]]; then
@@ -151,8 +154,8 @@ fi
 echo "Checkout $BRANCH branch from $HOSTTYPE..."
 git clone --depth=1 --branch $BRANCH $GITREPO $HOST_DIR
 
-if [ -n $BUILD_DIR ] then
-  $BUILD_DIR=$TEMP_BUILD/drupal
+if [[ -z $BUILD_DIR ]]; then
+  BUILD_DIR="$TEMP_BUILD/drupal"
   echo "Running build.sh -y $BUILD_DIR..."
   scripts/build.sh -y $BUILD_DIR
 fi
