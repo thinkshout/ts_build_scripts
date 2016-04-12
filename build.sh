@@ -138,9 +138,6 @@ chmod 755 $DESTINATION/sites/default
 # Inculde copies of the settings files that were used to build the site, for reference
 SETTINGS_SITE="$DESTINATION/profiles/$PROJECT/settings"
 
-# replace PROJECT with actual project name in local.settings.php
-sed -i '' "s/PROJECT/$PROJECT/g" $DESTINATION/profiles/$PROJECT/scripts/settings/local.settings.php
-
 cp $SETTINGS_SITE/* $DESTINATION/sites/default/
 printf "Copied all settings files into place.\n"
 
