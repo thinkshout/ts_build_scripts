@@ -115,11 +115,17 @@ drush make --no-core --contrib-destination --no-gitinfofile drupal-org.make tmp
 echo "Building the distribution..."
 drush make --no-gitinfofile drupal-org-core.make $TEMP_BUILD
 echo "Moving to destination... "
+if [ -d tmp/profiles ]; then
+  echo "Moving included distribution to its own profile directory..."
+  cp -r tmp/profiles/ $TEMP_BUILD/profiles
+  rm -rf tmp/profiles
+fi
 cp -r tmp/ $TEMP_BUILD/profiles/$PROJECT
 rm -rf tmp
 cp -a . $TEMP_BUILD/profiles/$PROJECT
 # Execute build customizations
 if [ "`type -t postbuild`" = 'function' ]; then
+    echo "Executing postbuild commands..."
     cd $TEMP_BUILD
     postbuild
     cd -
