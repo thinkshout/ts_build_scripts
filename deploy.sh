@@ -264,6 +264,9 @@ if [ "`type -t protectfiles`" = 'function' ]; then
   protectfiles
 fi
 
+# Don't bother sending .htaccess changes to Pantheon, since it uses nginx instead of apache
+git checkout .htaccess
+
 git ls-files -d --exclude-standard > $TEMP_BUILD/deletes
 echo "Adding file deletions to GIT"
 while read LINE
