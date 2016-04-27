@@ -111,6 +111,11 @@ fi
 printf "Building the profile...\n"
 drush make --no-core --contrib-destination --no-gitinfofile drupal-org.make tmp
 
+# Resolve duplicate directory issue for ckeditor/plugins/youtube.
+if [ $YOUTUBE_PLUGIN ]
+  mv tmp/modules/contrib/ckeditor/plugins/youtube/youtube/* tmp/modules/contrib/ckeditor/plugins/youtube/
+fi
+
 # Build the distribution and copy the profile in place.
 printf "Building the distribution...\n"
 drush make --no-gitinfofile drupal-org-core.make $TEMP_BUILD
