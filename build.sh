@@ -112,7 +112,7 @@ printf "Building the profile...\n"
 drush make --no-core --contrib-destination --no-gitinfofile drupal-org.make tmp
 
 # Resolve duplicate directory issue for ckeditor/plugins/youtube.
-if [ $YOUTUBE_PLUGIN ]
+if [ $YOUTUBE_PLUGIN ]; then
   mv tmp/modules/contrib/ckeditor/plugins/youtube/youtube/* tmp/modules/contrib/ckeditor/plugins/youtube/
 fi
 
