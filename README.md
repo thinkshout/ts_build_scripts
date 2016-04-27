@@ -51,4 +51,11 @@ The "branchname" argument, specified by a "-b", allows you to push to a remote b
 
 The # argument is an integer only, and should be used if you have made some sort of commit directly on the host, like running the Pantheon updates. This number should match the number of host-based commits you have made since you last ran the deploy script. If you make host-based commits, then don't pass this argument in, the deploy script won't generate an accurate commit message for your changes, but will otherwise work fine.
 
+### Custom Additions
+Issues specific to a project's build are likely to happen. For instance, there was a case where files were being moved from the `ckeditor/plugin/youtube` into a duplicate directory, i.e. `ckeditor/plugin/youtube/youtube`. This was causing the ckeditor to break upon build. Our solution was this:
+
+**Write a conditional statement** - here's the [youtube example](https://github.com/thinkshout/ts_build_scripts/blob/master/build.sh#L114-L117).
+
+**Add a variable to the project's `config.sh` file** - the [youtube example](https://github.com/thinkshout/colorado-trust/blob/master/settings/config.sh#L13), again.
+
 *These scripts developed by ThinkShout, Inc*
