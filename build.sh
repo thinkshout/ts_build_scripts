@@ -143,7 +143,7 @@ chmod 755 $DESTINATION/sites/default
 # Inculde copies of the settings files that were used to build the site, for reference
 SETTINGS_SITE="$DESTINATION/profiles/$PROJECT/settings"
 
-cp $SETTINGS_SITE/* $DESTINATION/sites/default/
+cp $SETTINGS_SITE/*.php $DESTINATION/sites/default/
 printf "Copied all settings files into place.\n"
 
 # run the install profile
