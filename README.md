@@ -10,9 +10,11 @@ Update ```config.sh``` with your profile name in the "PROJECT" variable, (this s
 The other two options can remain blank until you are ready to deploy.
 
 ### Building your site
+Create a MySQL database.
+
 To build a copy of your site, from your build directory, run:
 
-```./scripts/build.sh /PATH/TO/DRUPAL-ROOT```
+```./scripts/build.sh /PATH/TO/DRUPAL-ROOT <LOCAL DATABASE USERNAME>  <LOCAL DATABASE PASSWORD> <LOCAL DATABASE NAME>```
 
 WARNING: This will completely delete the contents of your target DRUPAL-ROOT directory! Don't be afraid to move or rename that directory first, just in case.
 
