@@ -10,9 +10,11 @@ Update ```config.sh``` with your profile name in the "PROJECT" variable, (this s
 The other two options can remain blank until you are ready to deploy.
 
 ### Building your site
+Create a MySQL database.
+
 To build a copy of your site, from your build directory, run:
 
-```./scripts/build.sh /PATH/TO/DRUPAL-ROOT```
+```./scripts/build.sh /PATH/TO/DRUPAL-ROOT <LOCAL DATABASE USERNAME>  <LOCAL DATABASE PASSWORD> <LOCAL DATABASE NAME>```
 
 WARNING: This will completely delete the contents of your target DRUPAL-ROOT directory! Don't be afraid to move or rename that directory first, just in case.
 
@@ -50,5 +52,12 @@ The Deployment script accepts some special arguments:
 The "branchname" argument, specified by a "-b", allows you to push to a remote branch on the host (for example, Pantheon's multidev environments). Note that the push is always done from whatever branch you are currently on, and this only specifies the remote branch to push to at the HOST.
 
 The # argument is an integer only, and should be used if you have made some sort of commit directly on the host, like running the Pantheon updates. This number should match the number of host-based commits you have made since you last ran the deploy script. If you make host-based commits, then don't pass this argument in, the deploy script won't generate an accurate commit message for your changes, but will otherwise work fine.
+
+### Custom Additions
+Issues specific to a project's build are likely to happen. For instance, there was a case where files were being moved from the `ckeditor/plugin/youtube` into a duplicate directory, i.e. `ckeditor/plugin/youtube/youtube`. This was causing the ckeditor to break upon build. Our solution was this:
+
+**Write a conditional statement** - here's the [youtube example](https://github.com/thinkshout/ts_build_scripts/blob/master/build.sh#L114-L117).
+
+**Add a variable to the project's `config.sh` file** - the [youtube example](https://github.com/thinkshout/colorado-trust/blob/master/settings/config.sh#L13), again.
 
 *These scripts developed by ThinkShout, Inc*
