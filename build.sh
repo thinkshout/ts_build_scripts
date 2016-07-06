@@ -125,7 +125,7 @@ if [ -d tmp/profiles ]; then
   cp -r tmp/profiles/ $TEMP_BUILD/profiles
   rm -rf tmp/profiles
 fi
-cp -r tmp $TEMP_BUILD/profiles/$PROJECT
+cp -r tmp/* $TEMP_BUILD/profiles/$PROJECT
 rm -rf tmp
 cp -a . $TEMP_BUILD/profiles/$PROJECT
 # Execute build customizations
