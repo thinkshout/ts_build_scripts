@@ -149,12 +149,18 @@ printf "Copied all settings files into place.\n"
 # run the install profile
 SETTINGS="$SETTINGS_SITE/settings_additions.php"
 if [ $DBUSER  ] && [ $DBPASS ] && [ $DB ] ; then
+  # check for a distro name, otherwise the project name is the install profile.
+  if [ "x$DISTRO" == "x" ]; then
+    PROFILE=$PROJECT
+  else
+    PROFILE=$DISTRO
+  fi
   # If bash receives an error status, it will halt execution. Setting +e to tell
   # bash to continue even if error.
   set +e
   cd $DESTINATION
-  printf "Running install profile...\n"
-  drush si $PROJECT --site-name="$SITENAME" --db-url=mysql://$DBUSER:$DBPASS@localhost/$DB -y
+  printf "Running $PROFILE install profile...\n"
+  drush si $PROFILE --site-name="$SITENAME" --db-url=mysql://$DBUSER:$DBPASS@localhost/$DB -y
   # Copy settings_additions.php if found
   printf "$SETTINGS\n"
   if [ -f $SETTINGS ]; then
@@ -185,5 +191,8 @@ fi
 # see https://github.com/thinkshout/ts_recipes/blob/master/environment_setup.sh
 cd $DESTINATION
 sed -i '' 's/# RewriteBase \/$/RewriteBase \//g' ./.htaccess
-
+if [ "x$DISTRO" == "x$PROFILE" ]; then
+  # remove the $PROJECT build directory, as it is not actually a profile.
+  rm -rf profiles/$PROJECT
+fi
 printf "\nBuild script complete.\n"
