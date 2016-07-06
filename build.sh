@@ -125,7 +125,15 @@ if [ -d tmp/profiles ]; then
   cp -r tmp/profiles/ $TEMP_BUILD/profiles
   rm -rf tmp/profiles
 fi
-cp -r tmp/* $TEMP_BUILD/profiles/$PROJECT
+# check for a distro name, otherwise the project name is the install profile.
+if [ "x$DISTRO" == "x" ]; then
+    PROFILE=$PROJECT
+    cp -r tmp/* $TEMP_BUILD/profiles/$PROJECT
+  else
+    PROFILE=$DISTRO
+    # Our Project isn't actually a profile, so we need to explicitly create directory:
+    cp -r tmp $TEMP_BUILD/profiles/$PROJECT
+fi
 rm -rf tmp
 cp -a . $TEMP_BUILD/profiles/$PROJECT
 # Execute build customizations
@@ -149,12 +157,6 @@ printf "Copied all settings files into place.\n"
 # run the install profile
 SETTINGS="$SETTINGS_SITE/settings_additions.php"
 if [ $DBUSER  ] && [ $DBPASS ] && [ $DB ] ; then
-  # check for a distro name, otherwise the project name is the install profile.
-  if [ "x$DISTRO" == "x" ]; then
-    PROFILE=$PROJECT
-  else
-    PROFILE=$DISTRO
-  fi
   # If bash receives an error status, it will halt execution. Setting +e to tell
   # bash to continue even if error.
   set +e
