@@ -128,7 +128,6 @@ fi
 # check for a distro name, otherwise the project name is the install profile.
 if [ "x$DISTRO" == "x" ]; then
     PROFILE=$PROJECT
-    mkdir $TEMP_BUILD/profiles/$PROJECT
     cp -r tmp/* $TEMP_BUILD/profiles/$PROJECT
   else
     PROFILE=$DISTRO
