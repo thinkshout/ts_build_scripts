@@ -125,17 +125,25 @@ if [ -d tmp/profiles ]; then
   cp -r tmp/profiles/ $TEMP_BUILD/profiles
   rm -rf tmp/profiles
 fi
+
+# Create the profile directory
+if [ ! -z "$PROJECT" ]; then
+  mkdir -p $TEMP_BUILD/profiles/$PROJECT
+fi
+
 # check for a distro name, otherwise the project name is the install profile.
 if [ "x$DISTRO" == "x" ]; then
-    PROFILE=$PROJECT
-    cp -r tmp/* $TEMP_BUILD/profiles/$PROJECT
-  else
-    PROFILE=$DISTRO
-    # Our Project isn't actually a profile, so we need to explicitly create directory:
-    cp -r tmp $TEMP_BUILD/profiles/$PROJECT
+  PROFILE=$PROJECT
+  cp -r tmp/* $TEMP_BUILD/profiles/$PROJECT
+else
+  PROFILE=$DISTRO
+  # Our Project isn't actually a profile, so we need to explicitly create directory:
+  cp -r tmp $TEMP_BUILD/profiles/$PROJECT
 fi
+
 rm -rf tmp
 cp -a . $TEMP_BUILD/profiles/$PROJECT
+
 # Execute build customizations
 if [ "`type -t postbuild`" = 'function' ]; then
     echo "Executing postbuild commands..."
