@@ -133,11 +133,11 @@ if [ "x$DISTRO" == "x" ]; then
     if [ ! -d '$TEMP_BUILD/profiles/$PROJECT' ]; then
       mkdir $TEMP_BUILD/profiles/$PROJECT
     fi
-    cp -r tmp $TEMP_BUILD/profiles/$PROJECT/
+    cp -r tmp/* $TEMP_BUILD/profiles/$PROJECT/
   else
     echo "Moving project to $TEMP_BUILD/profiles/$PROJECT/"
     # Our Project isn't actually a profile, so we need to explicitly create directory:
-    cp -r tmp $TEMP_BUILD/profiles/$PROJECT/
+    cp -r tmp/* $TEMP_BUILD/profiles/$PROJECT/
 fi
 
 rm -rf tmp
