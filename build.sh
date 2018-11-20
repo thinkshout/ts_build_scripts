@@ -12,7 +12,7 @@ set -e
 source settings/config.sh
 
 confirm () {
-  read -r -p "${1:-Are you sure? [Y/n]} " response
+  read -r -p "${1:-Are you sure? [y/N]} " response
   case $response in
     [yY][eE][sS]|[yY])
       true
