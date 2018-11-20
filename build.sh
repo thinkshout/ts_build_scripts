@@ -109,7 +109,7 @@ fi
 
 # Build the profile.
 printf "Building the profile...\n"
-drush make --no-core --contrib-destination --no-gitinfofile drupal-org.make tmp
+drush make --no-core --contrib-destination --no-gitinfofile --concurrency=8 drupal-org.make tmp
 
 # Resolve duplicate directory issue for ckeditor/plugins/youtube.
 if [ $YOUTUBE_PLUGIN ]; then
