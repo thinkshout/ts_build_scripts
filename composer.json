@@ -4,6 +4,7 @@
   "bin": [
       "bootstrap.sh",
       "build.sh",
+      "circle-deploy.sh",
       "deploy.sh"
   ]
 }
