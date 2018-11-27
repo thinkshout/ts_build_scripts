@@ -6,7 +6,7 @@ if [[ -z $CIRCLECI ]]; then
   exit 1
 fi
 
-export PATH="./vendor/bin:$PATH"
+export PATH="./vendor/drush/drush:./vendor/pantheon-systems/terminus/bin:./vendor/bin:$PATH"
 
 git config --global user.email "dev-team@thinkshout.com"
 git config --global user.name "ThinkShout Automation"
