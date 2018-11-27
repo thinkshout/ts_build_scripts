@@ -11,8 +11,9 @@ export PATH="./vendor/bin:$PATH"
 git config --global user.email "dev-team@thinkshout.com"
 git config --global user.name "ThinkShout Automation"
 
-git_host=$($GITREPO | sed -n "s/^.*@\(.*\):.*$/\1/p")
-ssh-keyscan -H -p 2222 $git_host >> ~/.ssh/known_hosts
+# Pull the host name out of the full git repo, between @ and :
+git_host=$(echo $GITREPO | sed -n "s/^.*@\(.*\):.*$/\1/p")
+ssh-keyscan -H -p 2222 "$git_host" >> ~/.ssh/known_hosts
 
 terminus auth:login --machine-token=$PANTHEON_TOKEN
 
