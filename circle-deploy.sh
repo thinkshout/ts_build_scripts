@@ -10,7 +10,7 @@ source settings/config.sh
 
 export PATH="./vendor/drush/drush:./vendor/pantheon-systems/terminus/bin:./vendor/bin:$PATH"
 
-git config --global user.email "dev-team@thinkshout.com"
+git config --global user.email "dev-team+pantheon@thinkshout.com"
 git config --global user.name "ThinkShout Automation"
 
 # Pull the host name out of the full git repo, between @ and :
