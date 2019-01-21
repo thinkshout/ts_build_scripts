@@ -53,6 +53,18 @@ The "branchname" argument, specified by a "-b", allows you to push to a remote b
 
 The # argument is an integer only, and should be used if you have made some sort of commit directly on the host, like running the Pantheon updates. This number should match the number of host-based commits you have made since you last ran the deploy script. If you make host-based commits, then don't pass this argument in, the deploy script won't generate an accurate commit message for your changes, but will otherwise work fine.
 
+### Setting up automated deployment with Circle CI
+
+If you already have these build scripts set up, you can hook your project up to circle ci and enable automated deployments from github->pantheon. From your project directory, run:
+
+```
+composer update thinkshout/ts_build_scripts
+
+cp -R vendor/thinkshout/ts_build_scripts/default.circleci .circleci
+```
+
+Then configure circle by following the directions in [default.circleci](default.circleci/README.md)
+
 ### Custom Additions
 Issues specific to a project's build are likely to happen. For instance, there was a case where files were being moved from the `ckeditor/plugin/youtube` into a duplicate directory, i.e. `ckeditor/plugin/youtube/youtube`. This was causing the ckeditor to break upon build. Our solution was this:
 

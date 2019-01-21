@@ -13,7 +13,7 @@ set -e
 source settings/config.sh
 
 confirm () {
-  read -r -p "${1:-Are you sure? [Y/n]} " response
+  read -r -p "${1:-Are you sure? [y/N]} " response
   case $response in
     [yY][eE][sS]|[yY])
       true
@@ -110,7 +110,7 @@ fi
 
 # Build the profile.
 printf "Building the profile...\n"
-drush make --no-core --contrib-destination --no-gitinfofile drupal-org.make tmp
+drush make --no-core --contrib-destination --no-gitinfofile --concurrency=8 drupal-org.make tmp
 
 # Resolve duplicate directory issue for ckeditor/plugins/youtube.
 if [ $YOUTUBE_PLUGIN ]; then
@@ -192,12 +192,7 @@ else
   fi
 fi
 
-# uncomment RewriteBase in project's .htaccess file
-# necessary for Drupal sites running on a machine configured using ThinkShout standards
-# see https://github.com/thinkshout/ts_recipes/tree/master/brew-lamp-dev-envt
-# see https://github.com/thinkshout/ts_recipes/blob/master/environment_setup.sh
 cd $DESTINATION
-sed -i '' 's/# RewriteBase \/$/RewriteBase \//g' ./.htaccess
 if [ "x$DISTRO" == "x$PROFILE" ]; then
   # remove the $PROJECT build directory, as it is not actually a profile.
   rm -rf profiles/$PROJECT
