@@ -19,7 +19,7 @@ ssh-keyscan -H -p 2222 "$git_host" >> ~/.ssh/known_hosts
 
 terminus auth:login --machine-token=$PANTHEON_TOKEN
 
-branch_name=$(terminus branch:list --field=ID -- $PROJECT | { grep "^$CIRCLE_BRANCH\$" || test $? = 1; })
+branch_name=$(terminus branch:list --field=ID -- $PANTHEON_SITE | { grep "^$CIRCLE_BRANCH\$" || test $? = 1; })
 if [[ -z "$branch_name" ]]; then
   echo "Pantheon branch $CIRCLE_BRANCH not found. Skipping deploy."
   exit 0
