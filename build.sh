@@ -126,18 +126,19 @@ if [ -d tmp/profiles ]; then
   cp -r tmp/profiles/ $TEMP_BUILD/profiles
   rm -rf tmp/profiles
 fi
+
 # check for a distro name, otherwise the project name is the install profile.
 if [ "x$DISTRO" == "x" ]; then
-    echo "Moving disto to $TEMP_BUILD/profiles/$PROJECT"
-    PROFILE=$PROJECT
-    if [ ! -d '$TEMP_BUILD/profiles/$PROJECT' ]; then
-      mkdir $TEMP_BUILD/profiles/$PROJECT
-    fi
-    cp -r tmp/* $TEMP_BUILD/profiles/$PROJECT/
-  else
-    echo "Moving project to $TEMP_BUILD/profiles/$PROJECT/"
-    # Our Project isn't actually a profile, so we need to explicitly create directory:
-    cp -r tmp/* $TEMP_BUILD/profiles/$PROJECT/
+  PROFILE=$PROJECT
+else
+  PROFILE=$DISTRO
+fi
+
+# Create the profile directory and copy files.
+if [ ! -z "$PROJECT" ]; then
+  echo "Moving files to $TEMP_BUILD/profiles/$PROJECT/"
+  mkdir -p $TEMP_BUILD/profiles/$PROJECT
+  cp -r tmp/* $TEMP_BUILD/profiles/$PROJECT/
 fi
 
 rm -rf tmp
