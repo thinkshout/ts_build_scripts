@@ -8,6 +8,10 @@ fi
 
 source settings/config.sh
 
+if [[ -z "$PANTHEON_SITE" ]]; then
+  PANTHEON_SITE=$PROJECT
+fi
+
 export PATH="./vendor/drush/drush:./vendor/pantheon-systems/terminus/bin:./vendor/bin:$PATH"
 
 git config --global user.email "dev-team+pantheon@thinkshout.com"
