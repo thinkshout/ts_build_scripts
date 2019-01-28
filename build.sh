@@ -9,6 +9,7 @@ set -e
 # profile will not be run, just built.
 #
 
+
 source settings/config.sh
 
 confirm () {
@@ -126,24 +127,22 @@ if [ -d tmp/profiles ]; then
   rm -rf tmp/profiles
 fi
 
-# Create the profile directory
-if [ ! -z "$PROJECT" ]; then
-  mkdir -p $TEMP_BUILD/profiles/$PROJECT
-fi
-
 # check for a distro name, otherwise the project name is the install profile.
 if [ "x$DISTRO" == "x" ]; then
   PROFILE=$PROJECT
-  cp -r tmp/* $TEMP_BUILD/profiles/$PROJECT
 else
   PROFILE=$DISTRO
-  # Our Project isn't actually a profile, so we need to explicitly create directory:
-  cp -r tmp $TEMP_BUILD/profiles/$PROJECT
+fi
+
+# Create the profile directory and copy files.
+if [ ! -z "$PROJECT" ]; then
+  echo "Moving files to $TEMP_BUILD/profiles/$PROJECT/"
+  mkdir -p $TEMP_BUILD/profiles/$PROJECT
+  cp -r tmp/* $TEMP_BUILD/profiles/$PROJECT/
 fi
 
 rm -rf tmp
 cp -a . $TEMP_BUILD/profiles/$PROJECT
-
 # Execute build customizations
 if [ "`type -t postbuild`" = 'function' ]; then
     echo "Executing postbuild commands..."
@@ -151,11 +150,10 @@ if [ "`type -t postbuild`" = 'function' ]; then
     postbuild
     cd -
 fi
-mv $TEMP_BUILD $DESTINATION
 
+mv $TEMP_BUILD $DESTINATION
 # set permissions on the sites/default directory
 chmod 755 $DESTINATION/sites/default
-
 # Inculde copies of the settings files that were used to build the site, for reference
 SETTINGS_SITE="$DESTINATION/profiles/$PROJECT/settings"
 
