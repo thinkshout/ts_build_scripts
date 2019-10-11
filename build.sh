@@ -113,7 +113,8 @@ drush make --no-core --contrib-destination --no-gitinfofile --concurrency=8 drup
 
 # Resolve duplicate directory issue for ckeditor/plugins/youtube.
 if [ $YOUTUBE_PLUGIN ]; then
-  mv tmp/modules/contrib/ckeditor/plugins/youtube/youtube/* tmp/modules/contrib/ckeditor/plugins/youtube/
+  mv youtube tmp/modules/contrib/ckeditor/plugins/youtube/
+  git checkout youtube
 fi
 
 # Build the distribution and copy the profile in place.
