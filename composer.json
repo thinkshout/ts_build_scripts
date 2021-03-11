@@ -1,9 +1,15 @@
 {
   "name": "thinkshout/ts_build_scripts",
-  "version": "0.0.1",
+  "version": "0.1.0",
+  "require": {
+    "php": "^7.1",
+    "pantheon-systems/terminus": "^1.8",
+    "drush/drush": "^8.0"
+  },
   "bin": [
       "bootstrap.sh",
       "build.sh",
+      "circle-deploy.sh",
       "deploy.sh"
   ]
 }
