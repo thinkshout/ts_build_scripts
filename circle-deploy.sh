@@ -19,13 +19,20 @@ ssh-keyscan -H -p 2222 "$git_host" >> ~/.ssh/known_hosts
 
 terminus auth:login --machine-token=$PANTHEON_TOKEN
 
-branch_name=$(terminus branch:list --field=ID -- $PROJECT | { grep "^$CIRCLE_BRANCH\$" || test $? = 1; })
-if [[ -z "$branch_name" ]]; then
-  echo "Pantheon branch $CIRCLE_BRANCH not found. Skipping deploy."
+export BRANCH=$CIRCLE_BRANCH
+echo "Using branch $BRANCH"
+if [ "$BRANCH" == "main" ]; then
+  BRANCH="master"
+else
+  BRANCH=$(terminus branch:list --field=ID -- $PROJECT | { grep "^$BRANCH\$" || test $? = 1; })
+fi
+
+if [[ -z "$BRANCH" ]]; then
+  echo "Pantheon branch $BRANCH not found. Skipping deploy."
   exit 0
 fi
 
-. ./scripts/deploy.sh -b "$CIRCLE_BRANCH" -m "Circle CI automated deployment. Build #$CIRCLE_BUILD_NUM" -y
+. ./scripts/deploy.sh -b "$BRANCH" -m "Circle CI automated deployment. Build #$CIRCLE_BUILD_NUM" -y
 
 echo "Copying build artifacts"
 if [ -e $TEMP_BUILD/diff.patch ]; then
